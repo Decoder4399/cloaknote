@@ -77,4 +77,7 @@ def get_stats():
 # Run App
 # ==============================
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    debug_mode = os.getenv("FLASK_DEBUG", "false").lower() == "true"
+    host = os.getenv("FLASK_HOST", "127.0.0.1")
+
+    app.run(host=host, port=5000, debug=debug_mode)
