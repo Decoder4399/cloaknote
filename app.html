@@ -14,331 +14,169 @@
   <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.4/build/qrcode.min.js"></script>
 
   <style>
-    .editor-wrap {
-      max-width: 800px;
-      margin: 40px auto;
-    }
-
-    .status-bar {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 20px;
-      font-size: 14px;
-      color: var(--text-muted);
-    }
-
-    .output-area {
-      margin-top: 40px;
-      display: none;
-      border-top: 1px border var(--border);
-      padding-top: 40px;
-    }
-
-    .link-display {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 16px;
-      font-family: monospace;
-      font-size: 13px;
-      word-break: break-all;
-      margin-bottom: 16px;
-    }
-
-    .toast {
-      position: fixed;
-      bottom: 30px;
-      right: 30px;
-      background: var(--primary);
-      color: white;
-      padding: 12px 24px;
-      border-radius: 12px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-      transform: translateY(100px);
-      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      z-index: 1000;
-      font-weight: 600;
-    }
-
-    .toast.show {
-      transform: translateY(0);
-    }
-
-    .qr-container canvas {
-      border-radius: 16px;
-      border: 8px solid white;
-    }
+    .editor-wrap { max-width: 800px; margin: 40px auto; }
+    .status-bar { display: flex; justify-content: space-between; margin-bottom: 20px; font-size: 14px; color: var(--text-muted); }
+    .output-area { margin-top: 40px; display: none; padding-top: 40px; }
+    .link-display { background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 12px; padding: 16px; font-family: monospace; font-size: 13px; word-break: break-all; margin-bottom: 16px; }
+    .toast { position: fixed; bottom: 30px; right: 30px; background: var(--primary); color: white; padding: 12px 24px; border-radius: 12px; transform: translateY(100px); transition: 0.3s; }
+    .toast.show { transform: translateY(0); }
   </style>
 </head>
 
 <body>
 
-  <canvas id="bg-canvas"></canvas>
-  <div class="mesh-gradient"></div>
+<canvas id="bg-canvas"></canvas>
+<div class="mesh-gradient"></div>
 
-  <div class="container animate">
-    <header style="padding: 30px 0; display: flex; justify-content: space-between; align-items: center;">
-      <a href="index.html" class="logo"
-        style="font-family: 'Outfit'; font-weight: 800; font-size: 24px; color: #fff; text-decoration: none;">
-        🔐 CLOAK<span style="color: var(--primary);">NOTE</span>
-      </a>
-      <div class="hide-mobile" style="font-size: 14px; color: var(--text-muted);">Secure Workspace</div>
-    </header>
+<div class="container animate">
+<header style="padding:30px 0; display:flex; justify-content:space-between;">
+<a href="index.html" class="logo">🔐 CLOAKNOTE</a>
+</header>
 
-    <main class="editor-wrap">
-      <div class="glass-card">
-        <div class="status-bar">
-          <div id="counter">0 / 2500 characters</div>
-          <div id="status-label">Local Encryption Active</div>
-        </div>
+<main class="editor-wrap">
+<div class="glass-card">
 
-        <textarea id="note"
-          placeholder="Write your secret message here... It will be encrypted locally and can only be opened once."
-          rows="10"></textarea>
+<div class="status-bar">
+<div id="counter">0 / 2500</div>
+<div id="status-label">Local Encryption Active</div>
+</div>
 
-        <div class="grid-stack" style="margin-top: 24px;">
-          <button id="generate" class="btn btn-primary">
-            <span>✨</span> Generate Secure Link
-          </button>
-          <button id="clear" class="btn btn-secondary">
-            <span>🗑️</span> Clear Everything
-          </button>
-        </div>
+<textarea id="note" rows="10"></textarea>
 
-        <div id="output" class="output-area">
-          <h3 style="margin-bottom: 20px; text-align: center;">Your Secret Link is Ready</h3>
+<div class="grid-stack" style="margin-top:20px;">
+<button id="generate">Generate</button>
+<button id="clear">Clear</button>
+</div>
 
-          <div class="link-display" id="linkBox"></div>
+<div id="output" class="output-area">
+<div id="linkBox"></div>
+<button id="copyBtn">Copy</button>
+<div id="qrContainer"></div>
+</div>
 
-          <button class="btn btn-accent" id="copyBtn" style="width: 100%;">
-            <span>📋</span> Copy Secure Link
-          </button>
+</div>
+</main>
 
-          <div style="margin-top: 30px; display: flex; flex-direction: column; align-items: center; gap: 16px;">
-            <div id="qrContainer" class="qr-container"></div>
-            <p style="color: var(--text-muted); font-size: 12px;">Scan to share via mobile</p>
-          </div>
-        </div>
-      </div>
-    </main>
+<footer>
+<a href="about.html">About</a>
+<a href="privacy.html">Privacy</a>
+<a href="terms.html">Terms</a>
+</footer>
+</div>
 
-    <!-- Advertisement -->
-    <div
-      style="margin: 20px auto; max-width: 800px; display: flex; justify-content: center; overflow: hidden; border-radius: 12px; background: rgba(255,255,255,0.03);">
-      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4590672186460447"
-        crossorigin="anonymous"></script>
-      <!-- add -->
-      <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4590672186460447" data-ad-slot="2939060770"
-        data-ad-format="auto" data-full-width-responsive="true"></ins>
-      <script>
-        (adsbygoogle = window.adsbygoogle || []).push({});
-      </script>
-    </div>
+<div id="toast" class="toast">Copied</div>
 
-    <footer>
-      <p>© 2026 CloakNote · Security by design</p>
-      <div style="margin-top: 20px;">
-        <a href="about.html">About</a>
-        <a href="privacy.html">Privacy</a>
-        <a href="terms.html">Terms</a>
-      </div>
-    </footer>
-  </div>
+<script>
+const noteEl = document.getElementById("note");
+const counterEl = document.getElementById("counter");
+const outputEl = document.getElementById("output");
+const linkBoxEl = document.getElementById("linkBox");
+const qrEl = document.getElementById("qrContainer");
 
-  <div id="toast" class="toast">Link copied securely!</div>
+function showToast(msg){
+  const t=document.getElementById("toast");
+  t.textContent=msg;
+  t.classList.add("show");
+  setTimeout(()=>t.classList.remove("show"),2000);
+}
 
-  <!-- ============ FIREBASE (STATS ONLY) ============ -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js";
-    import { getFirestore, doc, setDoc, increment } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+noteEl.oninput = () => {
+  counterEl.textContent = noteEl.value.length + "/2500";
+};
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyDjaIiHyqMMhvcER2NY2e8cuO6_r03T6gc",
-      authDomain: "try1-37d0f.firebaseapp.com",
-      projectId: "try1-37d0f",
-      storageBucket: "try1-37d0f.firebasestorage.app",
-      messagingSenderId: "619453374733",
-      appId: "1:619453374733:web:c7c18829e8e60492ad1044",
-      measurementId: "G-63STLTV74P"
-    };
+const fp = p => p.slice(0,40);
+const burned = f => localStorage.getItem("cloak_"+f)==="1";
+const burn = f => localStorage.setItem("cloak_"+f,"1");
 
-    const app = initializeApp(firebaseConfig);
-    const analytics = getAnalytics(app);
-    const db = getFirestore(app);
-    window._stats = { analytics, db, doc, setDoc, increment };
-  </script>
+async function deriveKey(s){
+  const e=new TextEncoder();
+  const b=await crypto.subtle.importKey("raw",e.encode(s),"PBKDF2",false,["deriveKey"]);
+  return crypto.subtle.deriveKey(
+    {name:"PBKDF2",salt:e.encode("cloaknote"),iterations:100000,hash:"SHA-256"},
+    b,{name:"AES-GCM",length:256},false,["encrypt","decrypt"]);
+}
 
-  <script>
-    /* App logic + Encryption */
-    const MAX = 2500;
-    const noteEl = document.getElementById("note");
-    const counterEl = document.getElementById("counter");
-    const outputEl = document.getElementById("output");
-    const linkBoxEl = document.getElementById("linkBox");
-    const qrEl = document.getElementById("qrContainer");
-    const toastEl = document.getElementById("toast");
-    const statusLabel = document.getElementById("status-label");
+async function enc(t,s){
+  const iv=crypto.getRandomValues(new Uint8Array(12));
+  const k=await deriveKey(s);
+  const c=LZString.compressToUint8Array(t);
+  const d=await crypto.subtle.encrypt({name:"AES-GCM",iv},k,c);
+  return btoa(String.fromCharCode(...iv))+"."+btoa(String.fromCharCode(...new Uint8Array(d)));
+}
 
-    function showToast(m) {
-      toastEl.textContent = m;
-      toastEl.classList.add("show");
-      setTimeout(() => toastEl.classList.remove("show"), 2500);
-    }
+async function dec(p,s){
+  const [i,d]=p.split(".");
+  const iv=Uint8Array.from(atob(i),c=>c.charCodeAt(0));
+  const data=Uint8Array.from(atob(d),c=>c.charCodeAt(0));
+  const k=await deriveKey(s);
+  const pl=await crypto.subtle.decrypt({name:"AES-GCM",iv},k,data);
+  return LZString.decompressFromUint8Array(new Uint8Array(pl));
+}
 
-    noteEl.oninput = () => {
-      const len = noteEl.value.length;
-      counterEl.textContent = `${len} / ${MAX} characters`;
-      counterEl.style.color = len > MAX ? "var(--accent)" : "var(--text-muted)";
-    };
-
-    const fp = p => p.slice(0, 40);
-    const burned = f => localStorage.getItem("cloak_" + f) === "1";
-    const burn = f => localStorage.setItem("cloak_" + f, "1");
-
-    async function deriveKey(s) {
-      const e = new TextEncoder();
-      const b = await crypto.subtle.importKey("raw", e.encode(s), "PBKDF2", false, ["deriveKey"]);
-      return crypto.subtle.deriveKey(
-        { name: "PBKDF2", salt: e.encode("cloaknote"), iterations: 100000, hash: "SHA-256" },
-        b, { name: "AES-GCM", length: 256 }, false, ["encrypt", "decrypt"]);
-    }
-
-    async function enc(t, s) {
-      const iv = crypto.getRandomValues(new Uint8Array(12));
-      const k = await deriveKey(s);
-      const c = LZString.compressToUint8Array(t);
-      const d = await crypto.subtle.encrypt({ name: "AES-GCM", iv }, k, c);
-      return btoa(String.fromCharCode(...iv)) + "." + btoa(String.fromCharCode(...new Uint8Array(d)));
-    }
-
-    async function dec(p, s) {
-      const [i, d] = p.split(".");
-      const iv = Uint8Array.from(atob(i), c => c.charCodeAt(0));
-      const data = Uint8Array.from(atob(d), c => c.charCodeAt(0));
-      const k = await deriveKey(s);
-      const pl = await crypto.subtle.decrypt({ name: "AES-GCM", iv }, k, data);
-      return LZString.decompressFromUint8Array(new Uint8Array(pl));
-    }
-
-    document.getElementById("generate").onclick = async () => {
-      const text = noteEl.value.trim();
-      if (!text) {
-        showToast("Please enter a note first!");
-        return;
-      }
-      if (text.length > MAX) {
-        showToast("Note is too long!");
-        return;
-      }
-
-      _stats?.setDoc(_stats.doc(_stats.db, "stats", "global"), { generateClicked: _stats.increment(1) }, { merge: true });
-
-      const s = crypto.randomUUID().slice(0, 8);
-      const e = await enc(text, s);
-      const url = location.origin + location.pathname + "#" + e + ":" + s;
-
-      outputEl.style.display = "block";
-      linkBoxEl.textContent = url;
-      qrEl.innerHTML = "";
-      QRCode.toDataURL(url, { width: 220, margin: 2, color: { dark: '#020617', light: '#ffffff' } }, (err, url) => {
-        if (err) {
-          console.error(err);
-          return;
-        }
-        const img = document.createElement("img");
-        img.src = url;
-        img.style.borderRadius = "12px";
-        img.style.border = "8px solid white";
-        qrEl.appendChild(img);
-      });
-
-      outputEl.scrollIntoView({ behavior: 'smooth' });
-      _stats?.setDoc(_stats.doc(_stats.db, "stats", "global"), { notesCreated: _stats.increment(1) }, { merge: true });
-    };
-
-    document.getElementById("copyBtn").onclick = async () => {
-      await navigator.clipboard.writeText(linkBoxEl.textContent);
-      showToast("Link copied securely ✓");
-      _stats?.setDoc(_stats.doc(_stats.db, "stats", "global"), { linksCopied: _stats.increment(1) }, { merge: true });
-    };
-
-    document.getElementById("clear").onclick = () => {
-      noteEl.value = "";
-      counterEl.textContent = "0 / 2500 characters";
-      outputEl.style.display = "none";
-      qrEl.innerHTML = "";
-    };
-
-    window.addEventListener("load", async () => {
-      _stats?.setDoc(_stats.doc(_stats.db, "stats", "global"), { visits: _stats.increment(1) }, { merge: true });
-
-      if (!location.hash.includes(":")) return;
-
-      const [p, s] = location.hash.substring(1).split(":");
-      const id = fp(p);
-
-      if (burned(id)) {
-        noteEl.value = "🔴 This CloakNote has already been opened and burned.";
-        statusLabel.textContent = "Note Burned";
-        statusLabel.style.color = "var(--accent)";
-        return;
-      }
-
-      try {
-        const t = await dec(p, s);
-        burn(id);
-        noteEl.value = t;
-        counterEl.textContent = `${t.length} / ${MAX} characters`;
-        statusLabel.textContent = "Decrypted & Self-Destructed";
-        statusLabel.style.color = "var(--accent)";
-
-        // Clear hash to prevent accidental re-sharing
-        history.replaceState(null, "", location.pathname);
-        _stats?.setDoc(_stats.doc(_stats.db, "stats", "global"), { notesViewed: _stats.increment(1) }, { merge: true });
-      } catch (err) {
-        console.error(err);
-        noteEl.value = "❌ Invalid or corrupted CloakNote link.";
-        statusLabel.textContent = "Decryption Failed";
-      }
+// ===== BACKEND TRACKING =====
+async function trackEvent(type){
+  try{
+    await fetch("http://localhost:5000/api/track",{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({event:type})
     });
+  }catch(e){}
+}
 
-    /* Background Animation */
-    const canvas = document.getElementById("bg-canvas");
-    const ctx = canvas.getContext("2d");
-    let w, h;
+// GENERATE
+document.getElementById("generate").onclick = async ()=>{
+  const text = noteEl.value.trim();
+  if(!text) return showToast("Enter note");
 
-    function resize() {
-      w = canvas.width = window.innerWidth;
-      h = canvas.height = window.innerHeight;
-    }
-    window.addEventListener("resize", resize);
-    resize();
+  const s = crypto.randomUUID().slice(0,8);
+  const e = await enc(text,s);
+  const url = location.origin + location.pathname + "#" + e + ":" + s;
 
-    const particles = Array.from({ length: 40 }, () => ({
-      x: Math.random() * w,
-      y: Math.random() * h,
-      vx: (Math.random() - 0.5) * 0.3,
-      vy: (Math.random() - 0.5) * 0.3,
-      r: Math.random() * 1.5 + 0.5,
-      color: "rgba(99, 102, 241, 0.15)"
-    }));
+  outputEl.style.display="block";
+  linkBoxEl.textContent=url;
 
-    function animate() {
-      ctx.clearRect(0, 0, w, h);
-      particles.forEach((p, i) => {
-        p.x += p.vx; p.y += p.vy;
-        if (p.x < 0 || p.x > w) p.vx *= -1;
-        if (p.y < 0 || p.y > h) p.vy *= -1;
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = p.color;
-        ctx.fill();
-      });
-      requestAnimationFrame(animate);
-    }
-    animate();
-  </script>
+  qrEl.innerHTML="";
+  QRCode.toCanvas(qrEl,url);
+
+  trackEvent("note_created");
+};
+
+// COPY
+document.getElementById("copyBtn").onclick = async ()=>{
+  await navigator.clipboard.writeText(linkBoxEl.textContent);
+  showToast("Copied");
+  trackEvent("link_copied");
+};
+
+// CLEAR
+document.getElementById("clear").onclick = ()=>{
+  noteEl.value="";
+  outputEl.style.display="none";
+};
+
+// VIEW
+window.addEventListener("load", async ()=>{
+  if(!location.hash.includes(":")) return;
+
+  const [p,s]=location.hash.substring(1).split(":");
+  const id=fp(p);
+
+  if(burned(id)){
+    noteEl.value="Already opened";
+    return;
+  }
+
+  try{
+    const t=await dec(p,s);
+    burn(id);
+    noteEl.value=t;
+    trackEvent("note_viewed");
+  }catch{
+    noteEl.value="Invalid";
+  }
+});
+</script>
+
 </body>
-
 </html>

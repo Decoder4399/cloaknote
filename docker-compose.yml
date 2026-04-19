@@ -1,0 +1,32 @@
+version: "3.8"
+
+services:
+
+  frontend:
+    build: .
+    container_name: cloaknote-frontend
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
+
+  backend:
+    build: ./backend
+    container_name: cloaknote-backend
+    ports:
+      - "5000:5000"
+    environment:
+      - MONGO_URI=mongodb://db:27017/
+    depends_on:
+      - db
+
+  db:
+    image: mongo:6
+    container_name: cloaknote-db
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+volumes:
+  mongo_data:
