@@ -27,7 +27,6 @@ jobs:
           safety scan -r backend/requirements.txt || true
   
   git-leaks-scan:
-    needs: security-scan
     runs-on: ubuntu-latest
 
     steps:
