@@ -41,8 +41,9 @@ jobs:
           args: "--path=. --report-format=JSON --report-path=gitleaks_report.json"
 
   build:
-    needs: security-scan
+    needs: [security-scan, git-leaks-scan]
     runs-on: ubuntu-latest
+    
 
     steps:
       - name: Checkout Code
