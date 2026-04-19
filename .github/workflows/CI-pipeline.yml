@@ -25,6 +25,20 @@ jobs:
         run: |
           pip install safety
           safety scan -r backend/requirements.txt || true
+  
+  git-leaks-scan:
+    needs: security-scan
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      # ================= GITLEAKS SCAN =================
+      - name: Run GitLeaks Scan
+        uses: zricethezav/gitleaks-action@master
+        with:
+          args: "--path=. --report-format=JSON --report-path=gitleaks_report.json"
 
   build:
     needs: security-scan
