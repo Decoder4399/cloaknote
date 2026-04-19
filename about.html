@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>About — CloakNote</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+  <canvas id="bg-canvas"></canvas>
+  <div class="mesh-gradient"></div>
+
+  <div class="container animate">
+    <header style="padding: 30px 0; display: flex; justify-content: space-between; align-items: center;">
+      <a href="index.html" class="logo"
+        style="font-family: 'Outfit'; font-weight: 800; font-size: 24px; color: #fff; text-decoration: none;">
+        🔐 CLOAK<span style="color: var(--primary);">NOTE</span>
+      </a>
+    </header>
+
+    <main style="max-width: 800px; margin: 0 auto;">
+      <div class="glass-card">
+        <a href="index.html" class="btn btn-secondary"
+          style="margin-bottom: 30px; padding: 10px 20px; font-size: 14px;">
+          ← Back to Home
+        </a>
+
+        <h1 class="gradient-text" style="font-size: 48px; margin-bottom: 24px;">About CloakNote</h1>
+
+        <p style="font-size: 18px; margin-bottom: 32px;">
+          CloakNote was built on the principle that privacy is a fundamental human right.
+          In an era of mass surveillance and data harvesting, we provide a simple,
+          secure way to share information without leaving a digital footprint.
+        </p>
+
+        <h2 style="margin-bottom: 16px; color: var(--primary);">Our Security Model</h2>
+        <p style="color: var(--text-muted); margin-bottom: 24px;">
+          Unlike traditional note-sharing services, CloakNote uses <strong>Client-Side Encryption</strong>.
+          When you write a note, your browser generates a random key and encrypts the content using AES-GCM
+          before any link is created. The encryption key never leaves your device. It is stored only in the
+          URL fragment (the part after the #), which is never sent to any server.
+        </p>
+
+        <h2 style="margin-bottom: 16px; color: var(--primary);">Key Features</h2>
+        <ul class="grid-stack" style="list-style: none; color: var(--text-muted); padding-left: 0;">
+          <li>✨ <strong>E2E Encryption</strong>: Browser-based AES-GCM.</li>
+          <li>🔥 <strong>Zero Persistence</strong>: No database storage.</li>
+          <li>⌛ <strong>Burn-on-Open</strong>: Local-enforced self-destruction.</li>
+          <li>🚫 <strong>No Tracking</strong>: No accounts or identity required.</li>
+        </ul>
+
+        <div style="margin-top: 48px; padding-top: 32px; border-top: 1px solid var(--border);">
+          <h2 style="margin-bottom: 16px;">Who is this for?</h2>
+          <p style="color: var(--text-muted);">
+            Developers sharing API keys, HR professionals sending sensitive employee details,
+            or anyone who needs to send a "one-time" password or secret safely.
+          </p>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      <p>© 2026 CloakNote · Built for privacy</p>
+    </footer>
+  </div>
+
+  <script>
+    /* Background Animation */
+    const canvas = document.getElementById("bg-canvas");
+    const ctx = canvas.getContext("2d");
+    let w, h;
+    function resize() { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; }
+    window.addEventListener("resize", resize); resize();
+    const particles = Array.from({ length: 30 }, () => ({
+      x: Math.random() * w, y: Math.random() * h,
+      vx: (Math.random() - 0.5) * 0.2, vy: (Math.random() - 0.5) * 0.2,
+      r: Math.random() * 1.5 + 0.5, color: "rgba(99, 102, 241, 0.1)"
+    }));
+    function animate() {
+      ctx.clearRect(0, 0, w, h);
+      particles.forEach(p => {
+        p.x += p.vx; p.y += p.vy;
+        if (p.x < 0 || p.x > w) p.vx *= -1; if (p.y < 0 || p.y > h) p.vy *= -1;
+        ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = p.color; ctx.fill();
+      });
+      requestAnimationFrame(animate);
+    }
+    animate();
+  </script>
+</body>
+
+</html>

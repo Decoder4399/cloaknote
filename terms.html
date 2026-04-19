@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Terms — CloakNote</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+  <canvas id="bg-canvas"></canvas>
+  <div class="mesh-gradient"></div>
+
+  <div class="container animate">
+    <header style="padding: 30px 0; display: flex; justify-content: space-between; align-items: center;">
+      <a href="index.html" class="logo"
+        style="font-family: 'Outfit'; font-weight: 800; font-size: 24px; color: #fff; text-decoration: none;">
+        🔐 CLOAK<span style="color: var(--primary);">NOTE</span>
+      </a>
+    </header>
+
+    <main style="max-width: 800px; margin: 0 auto;">
+      <div class="glass-card">
+        <a href="index.html" class="btn btn-secondary"
+          style="margin-bottom: 30px; padding: 10px 20px; font-size: 14px;">
+          ← Back to Home
+        </a>
+
+        <h1 class="gradient-text" style="font-size: 48px; margin-bottom: 24px;">Terms & Conditions</h1>
+
+        <p style="font-size: 18px; margin-bottom: 32px;">
+          By using CloakNote, you agree to the following terms and conditions.
+          Please read them carefully.
+        </p>
+
+        <h2 style="margin-bottom: 16px; color: var(--primary);">Acceptable Use</h2>
+        <ul style="color: var(--text-muted); margin-bottom: 24px; padding-left: 20px;">
+          <li style="margin-bottom: 10px;">You are solely responsible for the content you share via CloakNote.</li>
+          <li style="margin-bottom: 10px;">Do not use the service for illegal activities or to host malicious content.
+          </li>
+          <li style="margin-bottom: 10px;">Abuse of the service may lead to permanent blocking of your IP or device.
+          </li>
+        </ul>
+
+        <h2 style="margin-bottom: 16px; color: var(--primary);">Disclaimer of Warranty</h2>
+        <p style="color: var(--text-muted); margin-bottom: 24px;">
+          CloakNote is provided "as-is" and "as available" without any warranty of any kind.
+          We do not guarantee that the service will be uninterrupted or error-free.
+        </p>
+
+        <h2 style="margin-bottom: 16px; color: var(--primary);">Limitation of Liability</h2>
+        <p style="color: var(--text-muted); margin-bottom: 24px;">
+          Under no circumstances shall CloakNote be liable for any data loss, security breaches
+          resulting from user negligence, or any indirect damages arising from the use of the tool.
+        </p>
+
+        <h2 style="margin-bottom: 16px; color: var(--primary);">Modifications</h2>
+        <p style="color: var(--text-muted); margin-bottom: 24px;">
+          We reserve the right to modify or discontinue the service at any time without notice.
+          These terms may be updated periodically to reflect changes in our practices.
+        </p>
+      </div>
+    </main>
+
+    <footer>
+      <p>© 2026 CloakNote · Security by design</p>
+    </footer>
+  </div>
+
+  <script>
+    /* Background Animation */
+    const canvas = document.getElementById("bg-canvas");
+    const ctx = canvas.getContext("2d");
+    let w, h;
+    function resize() { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; }
+    window.addEventListener("resize", resize); resize();
+    const particles = Array.from({ length: 30 }, () => ({
+      x: Math.random() * w, y: Math.random() * h,
+      vx: (Math.random() - 0.5) * 0.2, vy: (Math.random() - 0.5) * 0.2,
+      r: Math.random() * 1.5 + 0.5, color: "rgba(99, 102, 241, 0.1)"
+    }));
+    function animate() {
+      ctx.clearRect(0, 0, w, h);
+      particles.forEach(p => {
+        p.x += p.vx; p.y += p.vy;
+        if (p.x < 0 || p.x > w) p.vx *= -1; if (p.y < 0 || p.y > h) p.vy *= -1;
+        ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = p.color; ctx.fill();
+      });
+      requestAnimationFrame(animate);
+    }
+    animate();
+  </script>
+</body>
+
+</html>

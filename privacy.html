@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Privacy Policy — CloakNote</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+  <canvas id="bg-canvas"></canvas>
+  <div class="mesh-gradient"></div>
+
+  <div class="container animate">
+    <header style="padding: 30px 0; display: flex; justify-content: space-between; align-items: center;">
+      <a href="index.html" class="logo"
+        style="font-family: 'Outfit'; font-weight: 800; font-size: 24px; color: #fff; text-decoration: none;">
+        🔐 CLOAK<span style="color: var(--primary);">NOTE</span>
+      </a>
+    </header>
+
+    <main style="max-width: 800px; margin: 0 auto;">
+      <div class="glass-card">
+        <a href="index.html" class="btn btn-secondary"
+          style="margin-bottom: 30px; padding: 10px 20px; font-size: 14px;">
+          ← Back to Home
+        </a>
+
+        <h1 class="gradient-text" style="font-size: 48px; margin-bottom: 24px;">Privacy Policy</h1>
+
+        <p style="font-size: 18px; margin-bottom: 32px;">
+          CloakNote is designed with privacy as the core principle.
+          We do not read, track, or store your notes.
+        </p>
+
+        <h2 style="margin-bottom: 16px; color: var(--primary);">What We Collect</h2>
+        <ul class="grid-stack"
+          style="color: var(--text-muted); margin-bottom: 24px; padding-left: 0; list-style: none;">
+          <li style="margin-bottom: 10px;"><strong>No Personal Information:</strong> We do not ask for your name, email,
+            or identity.</li>
+          <li style="margin-bottom: 10px;"><strong>No Content Access:</strong> Your notes are encrypted locally. We
+            never see their content.</li>
+          <li style="margin-bottom: 10px;"><strong>Minimal Stats:</strong> We use Firebase for basic metrics (visit
+            counts) to improve the tool.</li>
+        </ul>
+
+        <h2 style="margin-bottom: 16px; color: var(--primary);">Encrypted Notes</h2>
+        <p style="color: var(--text-muted); margin-bottom: 24px;">
+          All notes are encrypted in your browser before a link is created.
+          The encryption key is stored in the URL fragment (#), which stays in your browser
+          and is never sent to our servers.
+        </p>
+
+        <h2 style="margin-bottom: 16px; color: var(--primary);">Data Retention</h2>
+        <p style="color: var(--text-muted); margin-bottom: 24px;">
+          Since we don't use a database for note content, your notes exist only
+          within the encrypted links you share. Once a link is "burned" (either by
+          local storage marking or the link being lost), the data is effectively gone.
+        </p>
+
+        <div style="margin-top: 48px; padding-top: 32px; border-top: 1px solid var(--border);">
+          <h2 style="margin-bottom: 16px;">Contact</h2>
+          <p style="color: var(--text-muted);">
+            For privacy concerns, reach out via the official channels on the main page.
+          </p>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      <p>© 2026 CloakNote · Privacy by design</p>
+    </footer>
+  </div>
+
+  <script>
+    /* Background Animation */
+    const canvas = document.getElementById("bg-canvas");
+    const ctx = canvas.getContext("2d");
+    let w, h;
+    function resize() { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; }
+    window.addEventListener("resize", resize); resize();
+    const particles = Array.from({ length: 30 }, () => ({
+      x: Math.random() * w, y: Math.random() * h,
+      vx: (Math.random() - 0.5) * 0.2, vy: (Math.random() - 0.5) * 0.2,
+      r: Math.random() * 1.5 + 0.5, color: "rgba(99, 102, 241, 0.1)"
+    }));
+    function animate() {
+      ctx.clearRect(0, 0, w, h);
+      particles.forEach(p => {
+        p.x += p.vx; p.y += p.vy;
+        if (p.x < 0 || p.x > w) p.vx *= -1; if (p.y < 0 || p.y > h) p.vy *= -1;
+        ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = p.color; ctx.fill();
+      });
+      requestAnimationFrame(animate);
+    }
+    animate();
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+# Prevent indexing of encrypted note URLs (hash-based anyway)
+Disallow: /*#
+
+Sitemap: https://cloaknote.online/sitemap.xml

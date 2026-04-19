@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>CloakNote — Encrypted. Self-Destructing. Private.</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- SEO -->
+  <meta name="description"
+    content="Share secrets safely with CloakNote. Encrypted, burn-on-open notes. Zero servers. Zero tracking. Total privacy.">
+  <meta name="keywords" content="secure notes, encrypted notes, burn after reading, private sharing, secure messaging">
+  <meta name="author" content="CloakNote">
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+  <canvas id="bg-canvas"></canvas>
+  <div class="mesh-gradient"></div>
+
+  <div class="container">
+    <header style="padding: 30px 0; display: flex; justify-content: space-between; align-items: center;">
+      <div class="logo" style="font-family: 'Outfit'; font-weight: 800; font-size: 24px; color: #fff;">
+        🔐 CLOAK<span style="color: var(--primary);">NOTE</span>
+      </div>
+      <nav>
+        <a href="app.html" class="btn btn-primary" style="padding: 10px 20px; font-size: 14px;">Launch App</a>
+      </nav>
+    </header>
+
+    <section class="hero section animate" style="text-align: center;">
+      <h1 style="font-size: clamp(40px, 8vw, 72px); margin-bottom: 24px; line-height: 1.1;">
+        Send <span class="gradient-text">Secrets.</span><br>Not Your Data.
+      </h1>
+      <p style="color: var(--text-muted); font-size: 20px; max-width: 650px; margin: 0 auto 48px;">
+        The simplest way to share sensitive information. Your notes are encrypted in the browser and self-destruct after
+        being read.
+      </p>
+
+      <div style="display: flex; justify-content: center; gap: 16px; flex-wrap: wrap;">
+        <a href="app.html" class="btn btn-primary" id="ctaApp">Start Writing</a>
+        <a href="#how" class="btn btn-secondary" id="ctaHow">How it works</a>
+      </div>
+    </section>
+
+    <!-- Advertisement -->
+    <div
+      style="margin: 40px 0; display: flex; justify-content: center; overflow: hidden; border-radius: 12px; background: rgba(255,255,255,0.03);">
+      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4590672186460447"
+        crossorigin="anonymous"></script>
+      <!-- add -->
+      <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4590672186460447" data-ad-slot="2939060770"
+        data-ad-format="auto" data-full-width-responsive="true"></ins>
+      <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+    </div>
+
+    <section class="features section">
+      <div class="grid-stack">
+        <div class="glass-card animate" style="animation-delay: 0.1s;">
+          <div style="font-size: 32px; margin-bottom: 20px;">🛡️</div>
+          <h3 style="margin-bottom: 12px;">End-to-End Encryption</h3>
+          <p style="color: var(--text-muted);">Military-grade encryption happens entirely in your browser. We never see
+            your key.</p>
+        </div>
+        <div class="glass-card animate" style="animation-delay: 0.2s;">
+          <div style="font-size: 32px; margin-bottom: 20px;">🔥</div>
+          <h3 style="margin-bottom: 12px;">Burn on Open</h3>
+          <p style="color: var(--text-muted);">Links automatically self-destruct after the first viewing. One-time
+            access only.</p>
+        </div>
+        <div class="glass-card animate" style="animation-delay: 0.3s;">
+          <div style="font-size: 32px; margin-bottom: 20px;">☁️</div>
+          <h3 style="margin-bottom: 12px;">Zero Server Footprint</h3>
+          <p style="color: var(--text-muted);">No databases. No logs. Your content never touches our infrastructure.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="how section" id="how">
+      <div class="glass-card" style="text-align: center; border-radius: 40px; border-style: dashed;">
+        <h2 style="font-size: 36px; margin-bottom: 48px;">Four Simple Steps</h2>
+        <div class="grid-stack" style="gap: 40px;">
+          <div>
+            <div style="font-size: 24px; font-weight: 800; color: var(--primary); margin-bottom: 12px;">01</div>
+            <h3>Write</h3>
+            <p style="color: var(--text-muted);">Compose your message in our secure editor.</p>
+          </div>
+          <div>
+            <div style="font-size: 24px; font-weight: 800; color: var(--primary); margin-bottom: 12px;">02</div>
+            <h3>Seal</h3>
+            <p style="color: var(--text-muted);">Click generate to encrypt locally.</p>
+          </div>
+          <div>
+            <div style="font-size: 24px; font-weight: 800; color: var(--primary); margin-bottom: 12px;">03</div>
+            <h3>Share</h3>
+            <p style="color: var(--text-muted);">Send the secure link to your recipient.</p>
+          </div>
+          <div>
+            <div style="font-size: 24px; font-weight: 800; color: var(--primary); margin-bottom: 12px;">04</div>
+            <h3>Destroy</h3>
+            <p style="color: var(--text-muted);">The note vanishes once opened.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <p>© 2026 CloakNote · Security by design</p>
+      <div style="margin-top: 20px;">
+        <a href="about.html">About</a>
+        <a href="privacy.html">Privacy</a>
+        <a href="terms.html">Terms</a>
+      </div>
+    </footer>
+  </div>
+
+  <!-- ================= FIREBASE ================= -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getAnalytics, logEvent } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js";
+    import { getFirestore, doc, setDoc, increment } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDjaIiHyqMMhvcER2NY2e8cuO6_r03T6gc",
+      authDomain: "try1-37d0f.firebaseapp.com",
+      projectId: "try1-37d0f",
+      storageBucket: "try1-37d0f.firebasestorage.app",
+      messagingSenderId: "619453374733",
+      appId: "1:619453374733:web:c7c18829e8e60492ad1044",
+      measurementId: "G-63STLTV74P"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+    const db = getFirestore(app);
+
+    window._stats = { analytics, logEvent, doc, setDoc, increment, db };
+  </script>
+
+  <script>
+    /* Tracking Logic */
+    window.addEventListener("load", () => {
+      setTimeout(() => {
+        if (window._stats) {
+          _stats.setDoc(_stats.doc(_stats.db, "stats", "global"), { landingVisits: _stats.increment(1) }, { merge: true });
+        }
+      }, 1000);
+    });
+
+    document.getElementById("ctaApp").onclick = () => {
+      if (window._stats) {
+        _stats.setDoc(_stats.doc(_stats.db, "stats", "global"), { ctaAppClicks: _stats.increment(1) }, { merge: true });
+      }
+    };
+
+    document.getElementById("ctaHow").onclick = () => {
+      if (window._stats) {
+        _stats.setDoc(_stats.doc(_stats.db, "stats", "global"), { ctaHowClicks: _stats.increment(1) }, { merge: true });
+      }
+    };
+  </script>
+
+  <script>
+    /* Premium Particle Animation */
+    const canvas = document.getElementById("bg-canvas");
+    const ctx = canvas.getContext("2d");
+    let w, h;
+
+    function resize() {
+      w = canvas.width = window.innerWidth;
+      h = canvas.height = window.innerHeight;
+    }
+    window.addEventListener("resize", resize);
+    resize();
+
+    const particles = Array.from({ length: 60 }, () => ({
+      x: Math.random() * w,
+      y: Math.random() * h,
+      vx: (Math.random() - 0.5) * 0.5,
+      vy: (Math.random() - 0.5) * 0.5,
+      r: Math.random() * 2 + 1,
+      color: Math.random() > 0.5 ? "rgba(99, 102, 241, 0.2)" : "rgba(244, 63, 94, 0.2)"
+    }));
+
+    function animate() {
+      ctx.clearRect(0, 0, w, h);
+      particles.forEach((p, i) => {
+        p.x += p.vx;
+        p.y += p.vy;
+
+        if (p.x < 0 || p.x > w) p.vx *= -1;
+        if (p.y < 0 || p.y > h) p.vy *= -1;
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = p.color;
+        ctx.fill();
+
+        for (let j = i + 1; j < particles.length; j++) {
+          const q = particles[j];
+          const dist = Math.hypot(p.x - q.x, p.y - q.y);
+          if (dist < 150) {
+            ctx.strokeStyle = `rgba(255, 255, 255, ${0.1 * (1 - dist / 150)})`;
+            ctx.lineWidth = 0.5;
+            ctx.beginPath();
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(q.x, q.y);
+            ctx.stroke();
+          }
+        }
+      });
+      requestAnimationFrame(animate);
+    }
+    animate();
+  </script>
+</body>
+
+</html>
