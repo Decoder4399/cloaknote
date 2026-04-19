@@ -1,42 +1,75 @@
-name: CloakNote CI/CD
+name: DevSecOps Pipeline
 
 on:
+  push:
+    branches: [main]
   workflow_dispatch:
 
 jobs:
-  build:
+  security-scan:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Checkout
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v4
 
-      # 2. Setup Docker Buildx
-      - name: Set up Docker Buildx
+      # ================= SAST =================
+      - name: Run Bandit (Python Scan)
+        run: |
+          pip install bandit
+          bandit -r backend/
+
+      # ================= Dependency Scan =================
+      - name: Run Safety Check
+        run: |
+          pip install safety
+          safety check
+
+  build:
+    needs: security-scan
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Docker
         uses: docker/setup-buildx-action@v3
 
-      # 3. Login DockerHub
-      - name: Login to DockerHub
+      - name: Login DockerHub
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      # 4. Build & Push FRONTEND
-      - name: Build & Push Frontend Image
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          file: ./Dockerfile
-          push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/cloaknote-frontend:latest
+      # Build Frontend
+      - name: Build Frontend
+        run: docker build -t cloaknote-frontend .
 
-      # 5. Build & Push BACKEND
-      - name: Build & Push Backend Image
-        uses: docker/build-push-action@v5
+      # Build Backend
+      - name: Build Backend
+        run: docker build -t cloaknote-backend ./backend
+
+      # ================= IMAGE SCAN =================
+      - name: Scan Frontend Image
+        uses: aquasecurity/trivy-action@master
         with:
-          context: ./backend
-          file: ./backend/Dockerfile
-          push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/cloaknote-backend:latest
+          image-ref: cloaknote-frontend
+          format: table
+
+      - name: Scan Backend Image
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: cloaknote-backend
+          format: table
+
+      # Push Images
+      - name: Tag & Push Frontend
+        run: |
+          docker tag cloaknote-frontend ${{ secrets.DOCKER_USERNAME }}/cloaknote-frontend:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/cloaknote-frontend:latest
+
+      - name: Tag & Push Backend
+        run: |
+          docker tag cloaknote-backend ${{ secrets.DOCKER_USERNAME }}/cloaknote-backend:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/cloaknote-backend:latest
